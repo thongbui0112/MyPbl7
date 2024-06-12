@@ -1,0 +1,20 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement name="ProductHolder" class="ProductHolder" style="flex-grow: 1; background-color: rgba(166, 123, 123, 0); height: 600px; margin-top: 10px; flex-direction: row; justify-content: space-around; align-items: stretch;">
+        <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="ProductBtn1" class="productbutton Butoon" style="background-color: rgb(207, 207, 207); -unity-background-image-tint-color: rgb(255, 255, 255);">
+            <ui:VisualElement name="Image" style="flex-grow: 0; width: 100%; height: 70%; flex-shrink: 0; align-self: center; background-image: url(&apos;project://database/Assets/Imagae/vn-11134207-7r98o-lmwm42c127dr87.jpg?fileID=2800000&amp;guid=a824d338b954cc441ae987cbeb490ab0&amp;type=3#vn-11134207-7r98o-lmwm42c127dr87&apos;);" />
+            <ui:VisualElement style="flex-grow: 1;">
+                <ui:Label tabindex="-1" text="Shopee" parse-escape-sequences="true" display-tooltip-when-elided="true" name="StoreTxt" style="align-self: flex-start; color: rgb(255, 128, 0); font-size: 30%; -unity-text-align: middle-left;" />
+                <ui:Label tabindex="-1" text="Áo thun nam có cổ coor coor" parse-escape-sequences="true" display-tooltip-when-elided="true" name="NameTxt" style="align-self: flex-start; font-size: 35px; -unity-font-style: bold; -unity-text-align: middle-left; text-overflow: ellipsis; flex-direction: column; flex-wrap: nowrap; white-space: nowrap;" />
+                <ui:Label tabindex="-1" text="54.000 Vnd" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PriceTxt" style="align-self: flex-end; font-size: 35px; -unity-font-style: bold; color: rgb(255, 0, 0); justify-content: space-between; -unity-text-align: middle-right;" />
+            </ui:VisualElement>
+        </ui:Button>
+        <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="ProductBtn2" class="productbutton Butoon" style="background-color: rgb(207, 207, 207); -unity-background-image-tint-color: rgb(255, 255, 255);">
+            <ui:VisualElement name="Image" style="flex-grow: 0; width: 100%; height: 70%; flex-shrink: 0; align-self: center; background-image: url(&apos;project://database/Assets/Imagae/vn-11134207-7r98o-lmwm42c127dr87.jpg?fileID=2800000&amp;guid=a824d338b954cc441ae987cbeb490ab0&amp;type=3#vn-11134207-7r98o-lmwm42c127dr87&apos;);" />
+            <ui:VisualElement style="flex-grow: 1;">
+                <ui:Label tabindex="-1" text="Shopee" parse-escape-sequences="true" display-tooltip-when-elided="true" name="StoreTxt" style="align-self: flex-start; color: rgb(255, 128, 0); font-size: 30%; -unity-text-align: middle-left;" />
+                <ui:Label tabindex="-1" text="Áo thun nam có cổ coor coor" parse-escape-sequences="true" display-tooltip-when-elided="true" name="NameTxt" style="align-self: flex-start; font-size: 35px; -unity-font-style: bold; -unity-text-align: middle-left; text-overflow: ellipsis; flex-direction: column; flex-wrap: nowrap; white-space: nowrap;" />
+                <ui:Label tabindex="-1" text="54.000 Vnd" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PriceTxt" style="align-self: flex-end; font-size: 35px; -unity-font-style: bold; color: rgb(255, 0, 0); justify-content: space-between; -unity-text-align: middle-right;" />
+            </ui:VisualElement>
+        </ui:Button>
+    </ui:VisualElement>
+</ui:UXML>

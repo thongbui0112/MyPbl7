@@ -1,0 +1,58 @@
+.buttonCategoryMain {
+    color: rgb(0, 0, 0);
+    align-items: center;
+    height: 100%;
+    align-self: center;
+    font-size: 25px;
+    flex-shrink: 0;
+    -unity-font-style: normal;
+}
+
+.mainProduct {
+}
+
+.rightThread {
+    background-color: rgba(255, 111, 111, 0.92);
+    width: 50%;
+    align-self: flex-end;
+}
+
+.leftThread {
+    background-color: rgba(255, 111, 111, 0.92);
+    width: 50%;
+    align-self: flex-start;
+    flex-direction: column;
+}
+
+.pageView {
+}
+
+.blackLine {
+}
+
+.nameProCart {
+}
+
+.ProductHolder {
+    flex-grow: 1;
+    height: 600px;
+}
+
+.Butoon {
+    width: 40%;
+    height: 90%;
+    align-self: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.unity-base-field {
+}
