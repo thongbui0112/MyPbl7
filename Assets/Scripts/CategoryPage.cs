@@ -80,14 +80,19 @@ public class CategoryPage : MonoBehaviour {
     }
 
     public IEnumerator GetProducts(string nameCat){
-        string newUrl = this.apiUrl + "/api/v1/get_list_id_products_from_category" + "?name=" + nameCat;
+        
+        string newCate = UnityWebRequest.EscapeURL(nameCat);
+        string newUrl = this.apiUrl + "/api/v1/get_list_id_products_from_category" + "?name=" + newCate;
+        Debug.Log(newUrl);
 
         UnityWebRequest request = UnityWebRequest.Get(newUrl);
 
         yield return request.SendWebRequest(); 
 
-        if(request.result !=UnityWebRequest.Result.Success) {
+        
 
+        if(request.result !=UnityWebRequest.Result.Success) {
+            
         }
         else{
             string sponse = request.downloadHandler.text;

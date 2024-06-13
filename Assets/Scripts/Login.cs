@@ -1,7 +1,6 @@
 using Newtonsoft.Json;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.PackageManager.Requests;
+
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UIElements;
@@ -19,7 +18,7 @@ public class Login : MonoBehaviour
 
         this.backButton = this.login.Q<Button>("BackBtn");
         Debug.Log("Logining");
-       // StartCoroutine(LoginAPI("tranvanluyt12b4@gmail.com", "22032002"));
+        StartCoroutine(LoginAPI("thongbui0112@gmail.com", "123456789"));
     }
     public void AutoLogin(){
         if(PlayerPrefs.HasKey("Email") && PlayerPrefs.HasKey("Password")){
