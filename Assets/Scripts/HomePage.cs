@@ -65,24 +65,27 @@ public class HomePage : MonoBehaviour {
             ProductRecomender productRecomender = new ProductRecomender();
             productRecomender = JsonConvert.DeserializeObject<ProductRecomender>(response);
             Debug.Log(productRecomender.result.Count);
-    
 
-            for (int i = 0; i < productRecomender.result.Count; i = i + 2) {
+            CreateProducts(productRecomender.result,this.productView);
 
-                VisualElement productHolder = this.productHolder.CloneTree();
-                Button btn1 = productHolder.Q<Button>("ProductBtn1");
-                Button btn2 = productHolder.Q<Button>("ProductBtn2");
-                this.productView.Add(productHolder);
+        }
+    }
+    public void CreateProducts(List<string> products,ScrollView scrollView){
+        for (int i = 0; i < products.Count; i = i + 2) {
 
-                string productId1 = productRecomender.result[i];
-                StartCoroutine(GetProductById(productId1, btn1));
-                if (i + 1 % 2 != 0 && i + 1 == productRecomender.result.Count) {
-                    btn2.style.visibility = Visibility.Hidden;
-                }
-                else {
-                    string productId2 = productRecomender.result[i + 1];
-                    StartCoroutine(GetProductById(productId2, btn2));
-                }
+            VisualElement productHolder = this.productHolder.CloneTree();
+            Button btn1 = productHolder.Q<Button>("ProductBtn1");
+            Button btn2 = productHolder.Q<Button>("ProductBtn2");
+            scrollView.Add(productHolder);
+
+            string productId1 = products[i];
+            StartCoroutine(GetProductById(productId1, btn1));
+            if (i + 1 % 2 != 0 && i + 1 == products.Count) {
+                btn2.style.visibility = Visibility.Hidden;
+            }
+            else {
+                string productId2 =products[i + 1];
+                StartCoroutine(GetProductById(productId2, btn2));
             }
         }
     }
