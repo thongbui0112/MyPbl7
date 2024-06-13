@@ -1,17 +1,25 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UIElements;
 
 public class Login : MonoBehaviour
 {
     string apiUrl;
-
+    UIDocument uiDoc;
+    VisualElement login;
+    Button backButton;
     private void Awake() {
+        this.uiDoc = GetComponent<UIDocument>();
+        this.login = this.uiDoc.rootVisualElement.Q<VisualElement>("Login");
         this.apiUrl = FindObjectOfType<UIController>().apiUrl;
+
+        this.backButton = this.login.Q<Button>("BackBtn");
         Debug.Log("Logining");
-        StartCoroutine(LoginAPI("tranvanluyt12b4@gmail.com", "22032002"));
+       // StartCoroutine(LoginAPI("tranvanluyt12b4@gmail.com", "22032002"));
     }
     public void AutoLogin(){
         if(PlayerPrefs.HasKey("Email") && PlayerPrefs.HasKey("Password")){
@@ -40,7 +48,12 @@ public class Login : MonoBehaviour
 
             PlayerPrefs.SetString("Email", email);
             PlayerPrefs.SetString("Password", password);
+            LoginData loginData = JsonConvert.DeserializeObject<LoginData>(jsonResponse);
 
+            string accessTolken = loginData.data.accessToken;
+
+            PlayerPrefs.SetString("Tolken",accessTolken);
+            Debug.Log(PlayerPrefs.GetString("Tolken"));
         }
         else {
             Debug.Log("failed");

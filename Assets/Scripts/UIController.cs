@@ -11,6 +11,7 @@ public class UIController : MonoBehaviour {
     [SerializeField] Button homeBtn, categoryBtn, historyBtn, cartBtn, userBtn;
     [SerializeField] VisualElement homeIcon, categoryIcon, cartIcon, historyIcon, userIcon;
     [SerializeField] VisualElement homePage, categoryPage, cartPage, historyPage, userPage;
+    [SerializeField] VisualElement loginRequirement;
     private void Awake() {
         uiDocument = GetComponent<UIDocument>();
         this.homeBtn = uiDocument.rootVisualElement.Q<Button>("HomeBtn");
@@ -37,6 +38,7 @@ public class UIController : MonoBehaviour {
         this.historyBtn.clicked += HistoryBtnOnclick;
         this.userBtn.clicked += UserBtnOnclick;
 
+        this.loginRequirement = this.uiDocument.rootVisualElement.Q<VisualElement>("LoginRequirement");
     }
     [SerializeField] Texture2D homeNormal, homeSelected;
     [SerializeField] Texture2D categoryNormal, categorySelected;
@@ -78,13 +80,23 @@ public class UIController : MonoBehaviour {
             this.categoryPage.style.display = DisplayStyle.Flex;
         }
         if (namePage == "CartPage") {
-            this.cartPage.style.display = DisplayStyle.Flex;
+            if (PlayerPrefs.HasKey("Email") && PlayerPrefs.HasKey("Password")) {
+                this.cartPage.style.display = DisplayStyle.Flex;
+            }
+            else {
+                this.loginRequirement.style.display = DisplayStyle.Flex;
+            }
         }
         if (namePage == "HistoryPage") {
             this.historyPage.style.display = DisplayStyle.Flex;
         }
         if (namePage == "UserPage") {
+            if(PlayerPrefs.HasKey("Email") && PlayerPrefs.HasKey("Password")){
             this.userPage.style.display = DisplayStyle.Flex;
+            }
+            else {
+                this.loginRequirement.style.display = DisplayStyle.Flex;
+            }
         }
     }
     public void HideAllPage() {
@@ -93,6 +105,7 @@ public class UIController : MonoBehaviour {
         this.cartPage.style.display = DisplayStyle.None;
         this.historyPage.style.display = DisplayStyle.None;
         this.userPage.style.display = DisplayStyle.None;
+        this.loginRequirement.style.display = DisplayStyle.None;
     }
     public void SetIconPage(string namePage){
         this.homeIcon.style.backgroundImage = this.homeNormal;

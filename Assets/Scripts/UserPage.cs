@@ -9,7 +9,7 @@ public class UserPage : MonoBehaviour
     UIDocument uiDoc;
     VisualElement userPage,mainView;
     [SerializeField] VisualElement changePasswordPage,loginPage;
-    [SerializeField] Button changePassBtn,loginBtn;
+    [SerializeField] Button changePassBtn,logoutBtn;
 
     [SerializeField] VisualElement userAccountPage, loginRequirementPage;
     private void Awake() {
@@ -19,11 +19,12 @@ public class UserPage : MonoBehaviour
         this.changePasswordPage = this.uiDoc.rootVisualElement.Q<VisualElement>("ChangePasswordPage");
         this.loginPage = this.uiDoc.rootVisualElement.Q<VisualElement>("Login");
         this.userAccountPage = this.userPage.Q<VisualElement>("UserAccount");
-        this.loginRequirementPage = this.userPage.Q<VisualElement>("LoginRequirement");
-
         this.changePassBtn = this.userPage.Q<Button>("Password");
         this.changePassBtn.clicked += ChangePassBtn;
-        this.loginBtn.clicked += LoginBtn;
+    }
+
+    public void LogOutBtn(){
+        
     }
 
 
@@ -31,9 +32,6 @@ public class UserPage : MonoBehaviour
         this.mainView.style.display = DisplayStyle.None;
         this.changePasswordPage.style.display = DisplayStyle.Flex;
     }
-    public void LoginBtn(){
-        this.mainView.style.display = DisplayStyle.None;
-        this.loginPage.style.display = DisplayStyle.Flex;
-    }
+
 
 }
