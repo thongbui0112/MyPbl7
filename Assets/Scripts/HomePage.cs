@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -11,17 +11,21 @@ public class HomePage : MonoBehaviour {
     string accessTolken;
     string apiUrl;
     UIDocument uiDoc;
-    [SerializeField] VisualElement homePage,productPage;
-    [SerializeField] ScrollView productView;
-    [SerializeField] VisualTreeAsset productHolder;
+    [SerializeField] VisualElement homePage, productPage;
+    [SerializeField] ScrollView productScroll;
+    [SerializeField] VisualElement productView, categoryView;
+    [SerializeField] VisualTreeAsset productHolder, categoryRecommend;
     [SerializeField] Button searchBtn;
     [SerializeField] VisualElement searchPage, mainView;
+    [SerializeField] List<string> allCategory = new List<string>();
     private void Awake() {
-        accessTolken = PlayerPrefs.GetString("Tolken");
-        this.apiUrl = FindObjectOfType<UIController>().apiUrl;
+        accessTolken = PlayerPrefs.GetString("Token");
+
         this.uiDoc = GetComponent<UIDocument>();
         this.homePage = uiDoc.rootVisualElement.Q<VisualElement>("HomePage");
-        this.productView = this.homePage.Q<ScrollView>("ProductScroll");
+        this.productScroll = this.homePage.Q<ScrollView>("ProductScroll");
+        this.productView = this.homePage.Q<VisualElement>("ProductView");
+        this.categoryView = this.homePage.Q<VisualElement>("CategoryView");
         //for (int i = 0; i < 4; i++) {
         //    VisualElement productButton = this.productHolder.CloneTree();
         //    CreateProductHolder(productButton);
@@ -34,11 +38,14 @@ public class HomePage : MonoBehaviour {
         this.productPage = this.uiDoc.rootVisualElement.Q<VisualElement>("ProductPage");
 
         this.searchBtn.clicked += SearchBtn;
+        StartCoroutine(GetCat());
     }
     private void Start() {
+        this.apiUrl = FindObjectOfType<UIController>().apiUrl;
+    }
+    public void GetRecommendProducts() {
         StartCoroutine(GetRecommendedProducts());
     }
-
 
     public void SearchBtn() {
         this.mainView.style.display = DisplayStyle.None;
@@ -46,8 +53,11 @@ public class HomePage : MonoBehaviour {
     }
 
     public IEnumerator GetRecommendedProducts() {
-        string authorizationHeader = "Bearer" + this.accessTolken;
+        Debug.Log("hello");
+        string token = PlayerPrefs.GetString("Token");
+        string authorizationHeader = "Bearer" + token;
         string newUrl = this.apiUrl + "/api/v1/product_recommender";
+        Debug.Log(newUrl);
         Debug.Log(authorizationHeader);
         Debug.Log(newUrl);
         UnityWebRequest request = UnityWebRequest.Get(newUrl);
@@ -55,7 +65,7 @@ public class HomePage : MonoBehaviour {
         yield return request.SendWebRequest();
 
         if (request.result != UnityWebRequest.Result.Success) {
-            Debug.LogError("Error : " + request.error);
+            Debug.Log("Error : " + request.error);
         }
         else {
             string response = request.downloadHandler.text;
@@ -65,13 +75,13 @@ public class HomePage : MonoBehaviour {
             productRecomender = JsonConvert.DeserializeObject<ProductRecomender>(response);
             Debug.Log(productRecomender.result.Count);
 
-            CreateProducts(productRecomender.result,this.productView);
+            CreateProducts(productRecomender.result, this.productView);
 
         }
     }
-    public void CreateProducts(List<string> products,ScrollView scrollView){
+    public void CreateProducts(List<string> products, VisualElement scrollView) {
         int count = 20;
-        if(products.Count <= count){
+        if (products.Count <= count) {
             count = products.Count;
         }
         for (int i = 0; i < count; i = i + 2) {
@@ -87,7 +97,7 @@ public class HomePage : MonoBehaviour {
                 btn2.style.visibility = Visibility.Hidden;
             }
             else {
-                string productId2 =products[i + 1];
+                string productId2 = products[i + 1];
                 StartCoroutine(GetProductById(productId2, btn2));
             }
         }
@@ -106,18 +116,18 @@ public class HomePage : MonoBehaviour {
             string response = request.downloadHandler.text;
 
             ProductDetail productDetail = JsonConvert.DeserializeObject<ProductDetail>(response);
-            CreateProduct(productId,productDetail, btn);
+            CreateProduct(productId, productDetail, btn);
         }
     }
 
-    public void CreateProduct(string productId,ProductDetail productDetail, Button btn) {
+    public void CreateProduct(string productId, ProductDetail productDetail, Button btn) {
         string name = productDetail.data.detailProduct.name;
         string price = productDetail.data.detailProduct.price;
         string rate = productDetail.data.detailProduct.rate;
         string originalPrice = productDetail.data.detailProduct.price_original;
         string linkSale = productDetail.data.detailProduct.link_sale;
         string image_product = productDetail.data.detailProduct.image_product;
-        
+
         VisualElement img = btn.Q<VisualElement>("Image");
         Label lb1 = btn.Q<Label>("StoreTxt");
         Label lb2 = btn.Q<Label>("NameTxt");
@@ -145,18 +155,86 @@ public class HomePage : MonoBehaviour {
             img.style.backgroundImage = texture;
         }
     }
-    public void ProductBtnOnclick(Button btn){
+    public void ProductBtnOnclick(Button btn) {
         string idProduct = btn.Q<Label>("IdProduct").text;
         this.mainView.style.display = DisplayStyle.None;
         this.productPage.style.display = DisplayStyle.Flex;
 
         FindObjectOfType<ProductPage>().CreatePage(idProduct);
     }
+    public IEnumerator GetCat() {
+        yield return new WaitForSeconds(2f);
+        string nameCat = FindObjectOfType<CategoryPage>().allCategory[7];
+        StartCoroutine(GetProductsForHomePage(nameCat));
+        yield return new WaitForSeconds(.2f);
+        string nameCat1 = FindObjectOfType<CategoryPage>().allCategory[5];
+        StartCoroutine(GetProductsForHomePage(nameCat1));
+    }
+    public IEnumerator GetProductsForHomePage(string nameCat) {
+
+        string newCate = UnityWebRequest.EscapeURL(nameCat);
+        string newUrl = this.apiUrl + "/api/v1/get_list_id_products_from_category" + "?name=" + newCate;
+        Debug.Log(newUrl +"aksgggggggggggggggggggggggggggggggggggggggggggdl");
+
+        UnityWebRequest request = UnityWebRequest.Get(newUrl);
+
+        yield return request.SendWebRequest();
+
+
+
+        if (request.result != UnityWebRequest.Result.Success) {
+
+        }
+        else {
+            string sponse = request.downloadHandler.text;
+            Debug.Log(sponse);
+
+            ProductList productList = JsonConvert.DeserializeObject<ProductList>(sponse);
+
+            VisualElement categoryRec = this.categoryRecommend.CloneTree();
+            Button btn = categoryRec.Q<Button>("NameCateBtn");
+            btn.text = nameCat;
+            btn.clicked += () => ButtonCatOnClick(nameCat);
+            this.categoryView.Add(categoryRec);
+            CreateProductsCat(productList.data.result, categoryRec);
+        }
+
+    }
+    public void ButtonCatOnClick(string nameCat) {
+        FindObjectOfType<UIController>().CategoryBtnOnclick();
+        Button btn = this.uiDoc.rootVisualElement.Q<VisualElement>("CategoryPage").Q<Button>(nameCat);
+        FindObjectOfType<CategoryPage>().CategoryBtnOnclick(btn, nameCat);
+    }
+    public void CreateProductsCat(List<string> products, VisualElement categoryRec) {
+        int count = 10;
+        if (products.Count <= count) {
+            count = products.Count;
+        }
+        VisualElement cV = categoryRec.Q<ScrollView>("CategoryView");
+        for (int i = 0; i < count; i = i + 2) {
+     
+            VisualElement productHolder = this.productHolder.CloneTree();
+            Button btn1 = productHolder.Q<Button>("ProductBtn1");
+            Button btn2 = productHolder.Q<Button>("ProductBtn2");
+            cV.Add(productHolder);
+
+            string productId1 = products[i];
+            StartCoroutine(GetProductById(productId1, btn1));
+            if (i + 1 % 2 != 0 && i + 1 == count) {
+                btn2.style.visibility = Visibility.Hidden;
+            }
+            else {
+                string productId2 = products[i + 1];
+                StartCoroutine(GetProductById(productId2, btn2));
+            }
+        }
+
+    }
 
 
 
 }
-public class ProductInformation{
+public class ProductInformation {
     public string name;
     public string price;
     public string rate;
@@ -166,7 +244,7 @@ public class ProductInformation{
     public string discount;
     public string linkProduct;
 
-    public void GetData(ProductDetail p){
+    public void GetData(ProductDetail p) {
         this.name = p.data.detailProduct.name;
         this.price = p.data.detailProduct.price;
         this.rate = p.data.detailProduct.rate;

@@ -26,5 +26,6 @@ public class DetailProduct {
     public string price;
     public string price_original;
     public string rate;
+    public string description;
 }
 

@@ -6,13 +6,17 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class UIController : MonoBehaviour {
-    public string apiUrl = "http://127.0.0.1:5000";
+
+    public string apiUrl;
     [SerializeField] UIDocument uiDocument;
     [SerializeField] Button homeBtn, categoryBtn, historyBtn, cartBtn, userBtn;
     [SerializeField] VisualElement homeIcon, categoryIcon, cartIcon, historyIcon, userIcon;
     [SerializeField] VisualElement homePage, categoryPage, cartPage, historyPage, userPage;
     [SerializeField] VisualElement loginRequirement;
     private void Awake() {
+          // apiUrl = "http://localhost:5000";
+        apiUrl = "https://bfb-pbl7.xyz";
+
         uiDocument = GetComponent<UIDocument>();
         this.homeBtn = uiDocument.rootVisualElement.Q<Button>("HomeBtn");
         this.categoryBtn = uiDocument.rootVisualElement.Q<Button>("CategoryBtn");
@@ -62,7 +66,7 @@ public class UIController : MonoBehaviour {
     public void CartBtnOnclick() {
         SetIconPage("CartPage");
         DisplayPageSelected("CartPage");
-    } 
+    }
     public void HistoryBtnOnclick() {
         SetIconPage("HistoryPage");
         DisplayPageSelected("HistoryPage");
@@ -82,6 +86,7 @@ public class UIController : MonoBehaviour {
         if (namePage == "CartPage") {
             if (PlayerPrefs.HasKey("Email") && PlayerPrefs.HasKey("Password")) {
                 this.cartPage.style.display = DisplayStyle.Flex;
+                FindObjectOfType<CartPage>().GetCard();
             }
             else {
                 this.loginRequirement.style.display = DisplayStyle.Flex;
@@ -91,8 +96,9 @@ public class UIController : MonoBehaviour {
             this.historyPage.style.display = DisplayStyle.Flex;
         }
         if (namePage == "UserPage") {
-            if(PlayerPrefs.HasKey("Email") && PlayerPrefs.HasKey("Password")){
-            this.userPage.style.display = DisplayStyle.Flex;
+            if (PlayerPrefs.HasKey("Email") && PlayerPrefs.HasKey("Password")) {
+                this.userPage.style.display = DisplayStyle.Flex;
+                StartCoroutine( FindObjectOfType<UserPage>().GetUserProfile());
             }
             else {
                 this.loginRequirement.style.display = DisplayStyle.Flex;
@@ -107,7 +113,7 @@ public class UIController : MonoBehaviour {
         this.userPage.style.display = DisplayStyle.None;
         this.loginRequirement.style.display = DisplayStyle.None;
     }
-    public void SetIconPage(string namePage){
+    public void SetIconPage(string namePage) {
         this.homeIcon.style.backgroundImage = this.homeNormal;
         this.categoryIcon.style.backgroundImage = this.categoryNormal;
         this.cartIcon.style.backgroundImage = this.cartNormal;

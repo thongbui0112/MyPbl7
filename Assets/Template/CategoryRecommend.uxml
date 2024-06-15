@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="CategoryRecommend" style="flex-grow: 1; padding-top: 27px;">
+        <ui:Button text="NameCatBtn" parse-escape-sequences="true" display-tooltip-when-elided="true" name="NameCateBtn" style="font-size: 50px; -unity-font-style: bold; -unity-text-align: middle-left; background-color: rgba(188, 188, 188, 0); border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); color: rgb(0, 0, 255); white-space: nowrap; visibility: visible; height: 50px; align-self: flex-start; justify-content: flex-start;" />
+        <ui:ScrollView horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" mode="Horizontal" name="CategoryView" style="height: 600px; flex-grow: 1; flex-direction: row;" />
+    </ui:VisualElement>
+</ui:UXML>

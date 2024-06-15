@@ -1,5 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:VisualElement name="CartTemp" style="flex-grow: 0; flex-shrink: 0; margin-bottom: 15px;">
-        <ui:Label tabindex="-1" text="This is time" parse-escape-sequences="true" display-tooltip-when-elided="true" name="TimeTxt" style="font-size: 22px; -unity-font-style: bold;" />
-    </ui:VisualElement>
-</ui:UXML>

@@ -7,32 +7,21 @@ using UnityEngine.Networking;
 using UnityEngine.UIElements;
 public class CategoryPage : MonoBehaviour {
     UIDocument uiDoc;
-    [SerializeField] VisualElement categoryPage;
+    [SerializeField] VisualElement categoryPage,categoryViewHome;
     [SerializeField] ScrollView categoryView, productView;
     [SerializeField] VisualTreeAsset categoryBtn, productHolder;
-    Color defaulColor = new Color(190 / 255f, 190 / 255f, 190 / 255f);
+    Color defaulColor = new Color(150 / 255f, 235 / 255f, 255 / 255f);
     Color pickedColor = new Color(230 / 255f, 230 / 255f, 230 / 255f);
+    public List<string > allCategory = new List<string>();
     string apiUrl;
     private void Awake() {
+        pickedColor = Color.white;
         this.apiUrl = FindObjectOfType<UIController>().apiUrl;
         this.uiDoc = GetComponent<UIDocument>();
         this.categoryPage = this.uiDoc.rootVisualElement.Q<VisualElement>("CategoryPage");
         this.categoryView = this.categoryPage.Q<ScrollView>("CategoryScroll");
         this.productView = this.categoryPage.Q<ScrollView>("ProductScroll");
-        //for (int i = 0; i < 15; i++) {
-        //    VisualElement category = this.categoryBtn.CloneTree();
-        //    Button categoryBtn = category.Q<Button>();
-        //    categoryBtn.text = "I am fire, I am death";
-        //    categoryBtn.style.backgroundColor = defaulColor;
-        //    categoryBtn.clicked += () => ButtonOnclick(categoryBtn);
-
-        //    this.categoryView.Add(category);
-
-        //    VisualElement productButton = this.productHolder.CloneTree();
-        //    CreateProductHolder(productButton);
-        //    this.productView.Add(productButton);
-
-        //}
+       
         StartCoroutine(CreateCategories());
 
     }
@@ -52,14 +41,18 @@ public class CategoryPage : MonoBehaviour {
             Debug.Log(sponse);
 
             Category categories = JsonConvert.DeserializeObject<Category>(sponse);
-            foreach(string  i in categories.data.result) {
+            allCategory = categories.data.result;
+            Debug.Log("All Cat" + allCategory.Count);
+            foreach (string  i in categories.data.result) {
                 VisualElement category = this.categoryBtn.CloneTree();
                 Button categoryBtn = category.Q<Button>();
+                categoryBtn.name = i;
                 categoryBtn.text = i;
                 categoryBtn.style.backgroundColor = defaulColor;
                 categoryBtn.clicked += () => CategoryBtnOnclick(categoryBtn,i);
-
                 this.categoryView.Add(category);
+                if(i==categories.data.result[0])
+                    CategoryBtnOnclick(categoryBtn, i);
             }
         }
     }
@@ -99,9 +92,12 @@ public class CategoryPage : MonoBehaviour {
             Debug.Log(sponse);
 
             ProductList productList = JsonConvert.DeserializeObject<ProductList>(sponse);
+
             FindObjectOfType<HomePage>().CreateProducts(productList.data.result, this.productView);
         }
 
     }
+
+
 
 }
